@@ -5,7 +5,7 @@ org 0h
 		clr p1.2
 		clr p1.1
 		setb p1.0
-		orl p2,#01h
+		setb p2.0
 		mov a,#0
 		
 loop:	push acc
