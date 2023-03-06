@@ -1,14 +1,19 @@
-REL EQU -3							;Reload value for timer for 9600 baud
+REL EQU -3								;Reload value for timer for 9600 baud
 
 org 0
 	
-	mov scon,#52h					;WHY?
-	mov tmod #20h					;timer 1 mode 2
-	mov th1,REL						;9600 baud with 11.059MHz oscillator
+		mov scon,#40h					;sets sp to mode 1, 8bit uart baud rate set by timer
+		mov tmod,#20h					;timer 1 mode 2  ****must use timer 1
+		orl pcon,#00h					;clear smod, pcon not bit addressable
+		mov th1,#REL					;set reload value for 9600 baud with 11.059MHz oscillator
 	
-	setb tr1						;start timer
-	
-	sjmp $
+		setb tr1						;start timer
+		setb ti
+loop2: 	mov a,#20h
+loop:	acall OUTCHAR
+		inc a
+		cjne a,#7Fh,loop
+		sjmp loop2
 
 
 ;******************************************************************************
