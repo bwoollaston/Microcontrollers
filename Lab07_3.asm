@@ -18,8 +18,8 @@ nmloop:	push acc						;save a to incriment after running OUTCHAR
 		acall OUTCHAR
 		pop acc							
 		inc a							;incriment to next item of lookup table
-		cjne a,#9h,nmloop				;check if whole name+newline sequence has run
-		inc R7							;incriment to next iteration of name write
+		jz a,cont						;check if whole name+newline sequence has run
+cont:	inc R7							;incriment to next iteration of name write
 		cjne R7,#0Ah,repeat				;check if name has written 10 times
 		sjmp $
 
@@ -84,5 +84,5 @@ AGAIN:		jnb ti,AGAIN			;holdup until ti is set
 lookup:		inc a
 			movc a,@a+pc
 			ret
-nametable:	db 'B','r','o','d','i','e',0Dh,0Ah,0
+nametable:	db "Brodie",0Dh,0Ah,0
 end
