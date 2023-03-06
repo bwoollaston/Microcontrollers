@@ -5,7 +5,7 @@ org 0
 			mov tmod,#20h					;timer 1 mode 2  ****must use timer 1
 			anl pcon,#7Fh					;clear smod, pcon not bit addressable
 			mov th1,#REL					;set reload value for 9600 baud with 11.059MHz oscillator
-			setb tr1
+			setb tr1						;start timer
 		
 loop:		acall INCHAR					;read ascii charater
 			cjne a,#60h,$+3					;test for lower case ascii character
