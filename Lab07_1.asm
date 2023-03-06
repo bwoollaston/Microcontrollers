@@ -4,7 +4,7 @@ org 0
 	
 		mov scon,#40h					;sets sp to mode 1, 8bit uart baud rate set by timer
 		mov tmod,#20h					;timer 1 mode 2  ****must use timer 1
-		orl pcon,#00h					;clear smod, pcon not bit addressable
+		anl pcon,#7Fh					;clear smod, pcon not bit addressable
 		mov th1,#REL					;set reload value for 9600 baud with 11.059MHz oscillator
 	
 		setb tr1						;start timer
