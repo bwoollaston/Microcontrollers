@@ -1,21 +1,22 @@
-REL EQU -3								;Reload value for timer for 9600 baud
+REL EQU -3									;Reload value for timer for 9600 baud
 
 org 0
-		mov scon,#52h					;sets sp to mode 1, 8bit uart baud rate set by timer
-		mov tmod,#20h					;timer 1 mode 2  ****must use timer 1
-		orl pcon,#00h					;clear smod, pcon not bit addressable
-		mov th1,#REL					;set reload value for 9600 baud with 11.059MHz oscillator
+			mov scon,#52h					;sets sp to mode 1, 8bit uart baud rate set by timer
+			mov tmod,#20h					;timer 1 mode 2  ****must use timer 1
+			anl pcon,#7Fh					;clear smod, pcon not bit addressable
+			mov th1,#REL					;set reload value for 9600 baud with 11.059MHz oscillator
+			setb tr1
 		
-loop:	acall INCHAR					;read ascii charater
-		clr c
-		cjne a,#60h,$+3					;test  for lower case ascii character
-		jb cy,skip1
-		cjne a,#7Bh,$+3
-		jnb cy,skip1
-		subb a,#20h						;convert lower case ascii to upper case
-skip1:	setb ti							;start transmit
-		acall OUTCHAR					;write ascii to terminal
-		sjmp loop						;repeat for consecutive characters
+loop:		acall INCHAR					;read ascii charater
+			cjne a,#60h,$+3					;test for lower case ascii character
+			jb cy,skip1
+			cjne a,#7Bh,$+3
+			jnb cy,skip1
+			clr c
+			subb a,#20h						;convert lower case ascii to upper case
+skip1:		setb ti							;start transmit
+			acall OUTCHAR					;write ascii to terminal
+			sjmp loop						;repeat for consecutive characters
 
 ;******************************************************************************
 ;Subroutine to recieve odd parity ascii character via serial port
