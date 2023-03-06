@@ -13,12 +13,13 @@ TL2 	 DATA 0CCh
 TH2 	 DATA 0CDh
 
 org 0
-	
+		mov p0,#0
 		setb p1.0				;initialize p1.0 for input, counts customer
 		setb p1.1				;initialize p1.1 for input, trigger capture
 		mov t2con,#00001011b	;initialize timer2 con, EXEN HIGH, C/T2 HIGH, CP HIGH
 		mov TL2,#0
 		mov TH2,#0
+		setb tr2
 	
 wait1:	jnb exf2,wait1			;wait on timer 2 capture flag
 		acall Ato7seg
